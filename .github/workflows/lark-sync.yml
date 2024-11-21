@@ -15,12 +15,3 @@ jobs:
         with:
           webhook: ${{ secrets.FEISHU_BOT_WEBHOOK }}
           signkey: ${{ secrets.FEISHU_BOT_SIGNKEY }}
-          msg_type: text
-          content: |
-            text: |
-              Event: ${{ github.event_name }}
-              Repository: ${{ github.repository }}
-              Action: ${{ github.event.action }}
-              Issue/PR: ${{ github.event.issue.number || github.event.pull_request.number }}
-              Title: ${{ github.event.issue.title || github.event.pull_request.title }}
-              URL: ${{ github.event.issue.html_url || github.event.pull_request.html_url }}
