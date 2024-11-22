@@ -11,10 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Send notification to Feishu
-        uses: xl883109/feishu-bot-webhook-action@v2.0.2
+        uses: junka/feishu-bot-webhook-action@1.0.11
         with:
           webhook: ${{ secrets.FEISHU_BOT_WEBHOOK }}
           signkey: ${{ secrets.FEISHU_BOT_SIGNKEY }}
-          msgtype: 'text'
-          content: |
-            {"text": "有新的 GitHub 动态"}
