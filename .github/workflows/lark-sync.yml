@@ -1,5 +1,5 @@
 name: Notify Feishu Issue and PR Sync
-
+# some comment
 on:
   issues:
     types: [opened, edited, closed]
@@ -11,16 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Send notification to Feishu
-        uses: junka/feishu-bot-webhook-action@1.0.11
+        uses: huntye1/feishu-bot-webhook-action@main
         with:
           webhook: ${{ secrets.FEISHU_BOT_WEBHOOK }}
           signkey: ${{ secrets.FEISHU_BOT_SIGNKEY }}
-          msg_type: text
-          content: |
-            text: |
-              Event: ${{ github.event_name }}
-              Repository: ${{ github.repository }}
-              Action: ${{ github.event.action }}
-              Issue/PR: ${{ github.event.issue.number || github.event.pull_request.number }}
-              Title: ${{ github.event.issue.title || github.event.pull_request.title }}
-              URL: ${{ github.event.issue.html_url || github.event.pull_request.html_url }}
