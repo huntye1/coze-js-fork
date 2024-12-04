@@ -33,7 +33,7 @@ jobs:
         with:
           node-version: ${{ matrix.NodeVersion }}
 
-      # TODO: just test test
+      # TODO: just test
       - name: Increment Event Sync
         run: exit 1
 
