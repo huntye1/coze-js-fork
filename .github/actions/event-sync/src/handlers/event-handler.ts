@@ -21,6 +21,7 @@ export class PullRequestHandler extends EventHandler {
   async handle(): Promise<void> {
     const { pull_request, action } = github.context.payload as PullRequestEvent;
     if (!pull_request) {
+      warning('No pull request found in the event payload.');
       return;
     }
 
@@ -63,6 +64,7 @@ export class IssueHandler extends EventHandler {
   async handle(): Promise<void> {
     const { issue, action } = github.context.payload as IssuesEvent;
     if (!issue) {
+      warning('No issue found in the event payload.');
       return;
     }
 
@@ -88,7 +90,15 @@ export class IssueHandler extends EventHandler {
 export class CIFailureHandler extends EventHandler {
   async handle(): Promise<void> {
     const { workflow_run, action } = github.context.payload as WorkflowRunEvent;
-    if (!workflow_run || workflow_run.conclusion !== 'failure') {
+    if (!workflow_run) {
+      warning('No workflow run found in the event payload.');
+      return;
+    }
+
+    if (workflow_run.conclusion !== 'failure') {
+      warning(
+        `Workflow run is not failed. Conclusion: ${workflow_run.conclusion}`,
+      );
       return;
     }
 

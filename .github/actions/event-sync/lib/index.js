@@ -35986,6 +35986,7 @@ class PullRequestHandler extends EventHandler {
     async handle() {
         const { pull_request, action } = github.context.payload;
         if (!pull_request) {
+            (0, core_1.warning)('No pull request found in the event payload.');
             return;
         }
         const messageActionMap = {
@@ -36024,6 +36025,7 @@ class IssueHandler extends EventHandler {
     async handle() {
         const { issue, action } = github.context.payload;
         if (!issue) {
+            (0, core_1.warning)('No issue found in the event payload.');
             return;
         }
         const messageActionMap = {
@@ -36047,7 +36049,12 @@ exports.IssueHandler = IssueHandler;
 class CIFailureHandler extends EventHandler {
     async handle() {
         const { workflow_run, action } = github.context.payload;
-        if (!workflow_run || workflow_run.conclusion !== 'failure') {
+        if (!workflow_run) {
+            (0, core_1.warning)('No workflow run found in the event payload.');
+            return;
+        }
+        if (workflow_run.conclusion !== 'failure') {
+            (0, core_1.warning)(`Workflow run is not failed. Conclusion: ${workflow_run.conclusion}`);
             return;
         }
         const messageActionMap = {
@@ -36175,7 +36182,8 @@ class LarkPlatform {
     async send(message) {
         try {
             const formattedMessage = this.formatMessage(message);
-            await axios_1.default.post(this.webhookUrl, formattedMessage);
+            const res = await axios_1.default.post(this.webhookUrl, formattedMessage);
+            console.log(res.data);
         }
         catch (error) {
             core.setFailed(`Failed to send message to Lark: ${error}.message`);

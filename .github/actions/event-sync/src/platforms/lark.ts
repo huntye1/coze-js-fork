@@ -47,7 +47,8 @@ export class LarkPlatform implements NotificationPlatform {
   async send(message: NotificationMessage): Promise<void> {
     try {
       const formattedMessage = this.formatMessage(message);
-      await axios.post(this.webhookUrl, formattedMessage);
+      const res = await axios.post(this.webhookUrl, formattedMessage);
+      console.log(res.data);
     } catch (error) {
       core.setFailed(
         `Failed to send message to Lark: ${error as Error}.message`,
