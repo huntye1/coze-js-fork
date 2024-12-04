@@ -8,38 +8,55 @@ export class LarkPlatform implements NotificationPlatform {
 
   private formatMessage(message: NotificationMessage) {
     return {
-      msg_type: 'post',
-      content: {
-        post: {
-          zh_cn: {
-            title: message.title,
-            content: [
-              [
-                {
-                  tag: 'text',
-                  text: `${message.content}\n`,
-                },
-              ],
-              message.url
-                ? [
-                    {
-                      tag: 'a',
-                      text: '点击查看',
-                      href: message.url,
-                    },
-                  ]
-                : [],
-              message.creator
-                ? [
-                    {
-                      tag: 'text',
-                      text: `\n创建者: ${message.creator}`,
-                    },
-                  ]
-                : [],
-            ],
+      msg_type: 'interactive',
+      card: {
+        header: {
+          title: {
+            tag: 'plain_text',
+            content: message.title,
           },
         },
+        elements: [
+          {
+            tag: 'div',
+            fields: [
+              {
+                is_short: false,
+                text: {
+                  tag: 'lark_md',
+                  content: message.content,
+                },
+              },
+            ],
+          },
+          message.url
+            ? {
+                tag: 'action',
+                actions: [
+                  {
+                    tag: 'button',
+                    text: {
+                      tag: 'plain_text',
+                      content: 'View Details',
+                    },
+                    type: 'primary',
+                    url: message.url,
+                  },
+                ],
+              }
+            : {},
+          message.creator
+            ? {
+                tag: 'note',
+                elements: [
+                  {
+                    tag: 'plain_text',
+                    content: `creator: ${message.creator}`,
+                  },
+                ],
+              }
+            : {},
+        ],
       },
     };
   }

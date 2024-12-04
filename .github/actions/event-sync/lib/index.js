@@ -35991,22 +35991,22 @@ class PullRequestHandler extends EventHandler {
         }
         const messageActionMap = {
             opened: {
-                title: 'NEW Pull Request needs review',
-                content: `PR: ${pull_request.title}`,
+                title: '🚀 NEW Pull Request',
+                content: `PR title: ${pull_request.title}`,
                 url: pull_request.html_url,
                 creator: pull_request.user.login,
             },
             closed: {
                 title: pull_request.merged
-                    ? 'Pull Request merged'
-                    : 'Pull Request closed',
-                content: `PR: ${pull_request.title}`,
+                    ? '🎉 Pull Request merged'
+                    : '❌ Pull Request closed',
+                content: `PR title: ${pull_request.title}`,
                 url: pull_request.html_url,
                 creator: pull_request.user.login,
             },
             reopened: {
-                title: 'Pull Request reopened',
-                content: `PR: ${pull_request.title}`,
+                title: '🔄 Pull Request reopened',
+                content: `PR title: ${pull_request.title}`,
                 url: pull_request.html_url,
                 creator: pull_request.user.login,
             },
@@ -36030,8 +36030,8 @@ class IssueHandler extends EventHandler {
         }
         const messageActionMap = {
             opened: {
-                title: 'NEW Issue created',
-                content: `Issue: ${issue.title}`,
+                title: '🆕 Issue created',
+                content: `Issue title: ${issue.title}`,
                 url: issue.html_url,
                 creator: issue.user.login,
             },
@@ -36059,8 +36059,8 @@ class CIFailureHandler extends EventHandler {
         }
         const messageActionMap = {
             completed: {
-                title: 'CI build failed',
-                content: `Workflow: ${workflow_run.name}`,
+                title: '❗ CI build failed',
+                content: `Workflow name: ${workflow_run.name}`,
                 url: workflow_run.html_url,
             },
         };
@@ -36144,38 +36144,55 @@ class LarkPlatform {
     }
     formatMessage(message) {
         return {
-            msg_type: 'post',
-            content: {
-                post: {
-                    zh_cn: {
-                        title: message.title,
-                        content: [
-                            [
-                                {
-                                    tag: 'text',
-                                    text: `${message.content}\n`,
-                                },
-                            ],
-                            message.url
-                                ? [
-                                    {
-                                        tag: 'a',
-                                        text: '点击查看',
-                                        href: message.url,
-                                    },
-                                ]
-                                : [],
-                            message.creator
-                                ? [
-                                    {
-                                        tag: 'text',
-                                        text: `\n创建者: ${message.creator}`,
-                                    },
-                                ]
-                                : [],
-                        ],
+            msg_type: 'interactive',
+            card: {
+                header: {
+                    title: {
+                        tag: 'plain_text',
+                        content: message.title,
                     },
                 },
+                elements: [
+                    {
+                        tag: 'div',
+                        fields: [
+                            {
+                                is_short: false,
+                                text: {
+                                    tag: 'lark_md',
+                                    content: message.content,
+                                },
+                            },
+                        ],
+                    },
+                    message.url
+                        ? {
+                            tag: 'action',
+                            actions: [
+                                {
+                                    tag: 'button',
+                                    text: {
+                                        tag: 'plain_text',
+                                        content: 'View Details',
+                                    },
+                                    type: 'primary',
+                                    url: message.url,
+                                },
+                            ],
+                        }
+                        : {},
+                    message.creator
+                        ? {
+                            tag: 'note',
+                            elements: [
+                                {
+                                    tag: 'plain_text',
+                                    content: `creator: ${message.creator}`,
+                                },
+                            ],
+                        }
+                        : {},
+                ],
             },
         };
     }

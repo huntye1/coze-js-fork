@@ -27,22 +27,22 @@ export class PullRequestHandler extends EventHandler {
 
     const messageActionMap: ActionMessageMap<PullRequestEvent> = {
       opened: {
-        title: 'NEW Pull Request needs review',
-        content: `PR: ${pull_request.title}`,
+        title: '🚀 NEW Pull Request',
+        content: `PR title: ${pull_request.title}`,
         url: pull_request.html_url,
         creator: pull_request.user.login,
       },
       closed: {
         title: pull_request.merged
-          ? 'Pull Request merged'
-          : 'Pull Request closed',
-        content: `PR: ${pull_request.title}`,
+          ? '🎉 Pull Request merged'
+          : '❌ Pull Request closed',
+        content: `PR title: ${pull_request.title}`,
         url: pull_request.html_url,
         creator: pull_request.user.login,
       },
       reopened: {
-        title: 'Pull Request reopened',
-        content: `PR: ${pull_request.title}`,
+        title: '🔄 Pull Request reopened',
+        content: `PR title: ${pull_request.title}`,
         url: pull_request.html_url,
         creator: pull_request.user.login,
       },
@@ -70,8 +70,8 @@ export class IssueHandler extends EventHandler {
 
     const messageActionMap: ActionMessageMap<IssuesEvent> = {
       opened: {
-        title: 'NEW Issue created',
-        content: `Issue: ${issue.title}`,
+        title: '🆕 Issue created',
+        content: `Issue title: ${issue.title}`,
         url: issue.html_url,
         creator: issue.user.login,
       },
@@ -104,8 +104,8 @@ export class CIFailureHandler extends EventHandler {
 
     const messageActionMap: ActionMessageMap<WorkflowRunEvent> = {
       completed: {
-        title: 'CI build failed',
-        content: `Workflow: ${workflow_run.name}`,
+        title: '❗ CI build failed',
+        content: `Workflow name: ${workflow_run.name}`,
         url: workflow_run.html_url,
       },
     };
