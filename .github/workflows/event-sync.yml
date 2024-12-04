@@ -1,4 +1,5 @@
 # event list: https://docs.github.com/en/actions/writing-workflows/choosing-when-your-workflow-runs/events-that-trigger-workflows
+# test
 on:
   issues:
     types: [opened, closed]
