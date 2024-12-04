@@ -36035,6 +36035,18 @@ class IssueHandler extends EventHandler {
                 url: issue.html_url,
                 creator: issue.user.login,
             },
+            closed: {
+                title: '❌ Issue closed',
+                content: `Issue title: ${issue.title}`,
+                url: issue.html_url,
+                creator: issue.user.login,
+            },
+            reopened: {
+                title: '🔄 Issue reopened',
+                content: `Issue title: ${issue.title}`,
+                url: issue.html_url,
+                creator: issue.user.login,
+            },
         };
         const message = messageActionMap[action];
         if (message) {
@@ -36059,8 +36071,10 @@ class CIFailureHandler extends EventHandler {
         }
         const messageActionMap = {
             completed: {
-                title: '❗ CI build failed',
-                content: `Workflow name: ${workflow_run.name}`,
+                title: '❗ CI failed',
+                content: `Workflow name: ${workflow_run.name}, PRs: ${workflow_run.pull_requests
+                    .map(pr => `[${pr.title}](${pr.html_url})`)
+                    .join(', ')}`,
                 url: workflow_run.html_url,
             },
         };
