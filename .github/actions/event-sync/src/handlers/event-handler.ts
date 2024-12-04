@@ -27,21 +27,21 @@ export class PullRequestHandler extends EventHandler {
 
     const messageActionMap: ActionMessageMap<PullRequestEvent> = {
       opened: {
-        title: '🚀 NEW Pull Request',
+        title: `🚀 NEW Pull Request #${pull_request.number}`,
         content: `PR title: ${pull_request.title}`,
         url: pull_request.html_url,
         creator: pull_request.user.login,
       },
       closed: {
         title: pull_request.merged
-          ? '🎉 Pull Request merged'
-          : '❌ Pull Request closed',
+          ? `🎉 Pull Request #${pull_request.number} merged`
+          : `❌ Pull Request #${pull_request.number} closed`,
         content: `PR title: ${pull_request.title}`,
         url: pull_request.html_url,
         creator: pull_request.user.login,
       },
       reopened: {
-        title: '🔄 Pull Request reopened',
+        title: `🔄 Pull Request #${pull_request.number} reopened`,
         content: `PR title: ${pull_request.title}`,
         url: pull_request.html_url,
         creator: pull_request.user.login,
@@ -70,19 +70,19 @@ export class IssueHandler extends EventHandler {
 
     const messageActionMap: ActionMessageMap<IssuesEvent> = {
       opened: {
-        title: '🆕 Issue created',
+        title: `🆕 Issue #${issue.number} created`,
         content: `Issue title: ${issue.title}`,
         url: issue.html_url,
         creator: issue.user.login,
       },
       closed: {
-        title: '❌ Issue closed',
+        title: `❌ Issue #${issue.number} closed`,
         content: `Issue title: ${issue.title}`,
         url: issue.html_url,
         creator: issue.user.login,
       },
       reopened: {
-        title: '🔄 Issue reopened',
+        title: `🔄 Issue #${issue.number} reopened`,
         content: `Issue title: ${issue.title}`,
         url: issue.html_url,
         creator: issue.user.login,
@@ -116,7 +116,7 @@ export class CIFailureHandler extends EventHandler {
 
     const messageActionMap: ActionMessageMap<WorkflowRunEvent> = {
       completed: {
-        title: '❗ CI failed',
+        title: '❗ Workflow run failed',
         content: `Workflow name: ${JSON.stringify(workflow_run)}, PRs: ${workflow_run.pull_requests
           .map(pr => JSON.stringify(pr))
           .join(', ')}`,
