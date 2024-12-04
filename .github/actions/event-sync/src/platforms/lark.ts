@@ -4,7 +4,16 @@ import * as core from '@actions/core';
 import { type NotificationMessage, type NotificationPlatform } from '../types';
 
 export class LarkPlatform implements NotificationPlatform {
-  constructor(private webhookUrl: string) {}
+  constructor(
+    private webhookUrl: string,
+    private personOpenIds?: Record<string, string>,
+  ) {}
+
+  private getPerson(personName: string) {
+    return this.personOpenIds?.[personName]
+      ? `<at id=${this.personOpenIds[personName]}></at>`
+      : personName;
+  }
 
   private formatMessage(message: NotificationMessage) {
     return {
@@ -50,8 +59,8 @@ export class LarkPlatform implements NotificationPlatform {
                 tag: 'note',
                 elements: [
                   {
-                    tag: 'plain_text',
-                    content: `creator: ${message.creator}`,
+                    tag: 'lark_md',
+                    content: `creator: ${this.getPerson(message.creator)}`,
                   },
                 ],
               }

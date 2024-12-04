@@ -22,3 +22,4 @@ jobs:
         id: event_sync
         with:
           lark_webhook_url: ${{ secrets.LARK_WEBHOOK_URL }}
+          lark_person_open_ids: ${{ secrets.LARK_PERSON_OPEN_IDS }}

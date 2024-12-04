@@ -6,8 +6,11 @@ import { handlerFactory } from './handlers/handler-factory';
 
 async function run() {
   try {
-    const webhookUrl = getInput('lark_webhook_url', { required: true });
-    const platform = new LarkPlatform(webhookUrl);
+    const larkWebhookUrl = getInput('lark_webhook_url', { required: true });
+    const larkPersonOpenIds = JSON.parse(
+      getInput('lark_person_open_ids', { required: false }) || '{}',
+    );
+    const platform = new LarkPlatform(larkWebhookUrl, larkPersonOpenIds);
 
     const handler = handlerFactory.createHandler(context.eventName, platform);
 

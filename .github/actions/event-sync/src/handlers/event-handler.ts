@@ -118,7 +118,7 @@ export class CIFailureHandler extends EventHandler {
       completed: {
         title: '❗ CI failed',
         content: `Workflow name: ${workflow_run.name}, PRs: ${workflow_run.pull_requests
-          .map(pr => `[${pr.title}](${pr.html_url})`)
+          .map(pr => JSON.stringify(pr))
           .join(', ')}`,
         url: workflow_run.html_url,
       },

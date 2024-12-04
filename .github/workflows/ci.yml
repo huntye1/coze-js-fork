@@ -33,6 +33,10 @@ jobs:
         with:
           node-version: ${{ matrix.NodeVersion }}
 
+      # TODO: just test test
+      - name: Increment Event Sync
+        run: exit 1
+
       - name: Install Dependencies
         run: node common/scripts/install-run-rush.js install
 
@@ -54,10 +58,6 @@ jobs:
 
       - name: Increment Package Audit
         run: node infra/rush-x/bin/run increment --action package-audit -f "${{ steps.changed-files.outputs.all_changed_files }}" -s ' '
-
-      # TODO: just test test
-      - name: Increment Event Sync
-        run: exit 1
 
       - name: Fail if any report failed
         # NOTICE: To show all reports from the previous steps, the last step should check if any jobs failed.

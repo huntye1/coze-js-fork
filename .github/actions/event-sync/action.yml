@@ -4,6 +4,9 @@ inputs:
   lark_webhook_url:
     description: 'Lark group webhook URL'
     required: true
+  lark_person_open_ids:
+    description: 'Lark person open ids'
+    required: false
 # runs:
 #   using: 'composite'
 #   steps:
