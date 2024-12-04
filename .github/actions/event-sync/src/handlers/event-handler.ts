@@ -75,6 +75,18 @@ export class IssueHandler extends EventHandler {
         url: issue.html_url,
         creator: issue.user.login,
       },
+      closed: {
+        title: '❌ Issue closed',
+        content: `Issue title: ${issue.title}`,
+        url: issue.html_url,
+        creator: issue.user.login,
+      },
+      reopened: {
+        title: '🔄 Issue reopened',
+        content: `Issue title: ${issue.title}`,
+        url: issue.html_url,
+        creator: issue.user.login,
+      },
     };
 
     const message = messageActionMap[action];
