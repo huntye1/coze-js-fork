@@ -35991,21 +35991,21 @@ class PullRequestHandler extends EventHandler {
         }
         const messageActionMap = {
             opened: {
-                title: '🚀 NEW Pull Request',
+                title: `🚀 NEW Pull Request #${pull_request.number}`,
                 content: `PR title: ${pull_request.title}`,
                 url: pull_request.html_url,
                 creator: pull_request.user.login,
             },
             closed: {
                 title: pull_request.merged
-                    ? '🎉 Pull Request merged'
-                    : '❌ Pull Request closed',
+                    ? `🎉 Pull Request #${pull_request.number} merged`
+                    : `❌ Pull Request #${pull_request.number} closed`,
                 content: `PR title: ${pull_request.title}`,
                 url: pull_request.html_url,
                 creator: pull_request.user.login,
             },
             reopened: {
-                title: '🔄 Pull Request reopened',
+                title: `🔄 Pull Request #${pull_request.number} reopened`,
                 content: `PR title: ${pull_request.title}`,
                 url: pull_request.html_url,
                 creator: pull_request.user.login,
@@ -36030,19 +36030,19 @@ class IssueHandler extends EventHandler {
         }
         const messageActionMap = {
             opened: {
-                title: '🆕 Issue created',
+                title: `🆕 Issue #${issue.number} created`,
                 content: `Issue title: ${issue.title}`,
                 url: issue.html_url,
                 creator: issue.user.login,
             },
             closed: {
-                title: '❌ Issue closed',
+                title: `❌ Issue #${issue.number} closed`,
                 content: `Issue title: ${issue.title}`,
                 url: issue.html_url,
                 creator: issue.user.login,
             },
             reopened: {
-                title: '🔄 Issue reopened',
+                title: `🔄 Issue #${issue.number} reopened`,
                 content: `Issue title: ${issue.title}`,
                 url: issue.html_url,
                 creator: issue.user.login,
@@ -36071,9 +36071,9 @@ class CIFailureHandler extends EventHandler {
         }
         const messageActionMap = {
             completed: {
-                title: '❗ CI failed',
-                content: `Workflow name: ${workflow_run.name}, PRs: ${workflow_run.pull_requests
-                    .map(pr => `[${pr.title}](${pr.html_url})`)
+                title: '❗ Workflow run failed',
+                content: `Workflow name: ${JSON.stringify(workflow_run)}, PRs: ${workflow_run.pull_requests
+                    .map(pr => JSON.stringify(pr))
                     .join(', ')}`,
                 url: workflow_run.html_url,
             },
@@ -36153,8 +36153,15 @@ const axios_1 = __importDefault(__nccwpck_require__(1528));
 const core = __importStar(__nccwpck_require__(357));
 class LarkPlatform {
     webhookUrl;
-    constructor(webhookUrl) {
+    personOpenIds;
+    constructor(webhookUrl, personOpenIds) {
         this.webhookUrl = webhookUrl;
+        this.personOpenIds = personOpenIds;
+    }
+    getPerson(personName) {
+        return this.personOpenIds?.[personName]
+            ? `<at id=${this.personOpenIds[personName]}></at>`
+            : personName;
     }
     formatMessage(message) {
         return {
@@ -36200,8 +36207,8 @@ class LarkPlatform {
                             tag: 'note',
                             elements: [
                                 {
-                                    tag: 'plain_text',
-                                    content: `creator: ${message.creator}`,
+                                    tag: 'lark_md',
+                                    content: `creator: ${this.getPerson(message.creator)}`,
                                 },
                             ],
                         }
@@ -42924,8 +42931,9 @@ const lark_1 = __nccwpck_require__(7069);
 const handler_factory_1 = __nccwpck_require__(3105);
 async function run() {
     try {
-        const webhookUrl = (0, core_1.getInput)('lark_webhook_url', { required: true });
-        const platform = new lark_1.LarkPlatform(webhookUrl);
+        const larkWebhookUrl = (0, core_1.getInput)('lark_webhook_url', { required: true });
+        const larkPersonOpenIds = JSON.parse((0, core_1.getInput)('lark_person_open_ids', { required: false }) || '{}');
+        const platform = new lark_1.LarkPlatform(larkWebhookUrl, larkPersonOpenIds);
         const handler = handler_factory_1.handlerFactory.createHandler(github_1.context.eventName, platform);
         if (!handler) {
             (0, core_1.warning)(`No handler found for event: ${github_1.context.eventName}`);
