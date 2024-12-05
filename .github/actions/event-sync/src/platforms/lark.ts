@@ -11,7 +11,7 @@ export class LarkPlatform implements NotificationPlatform {
 
   private getPerson(personName: string) {
     return this.personOpenIds?.[personName]
-      ? `<at id=${this.personOpenIds[personName]}></at>`
+      ? `<at id=${this.personOpenIds[personName]}></at>(${personName})`
       : personName;
   }
 
