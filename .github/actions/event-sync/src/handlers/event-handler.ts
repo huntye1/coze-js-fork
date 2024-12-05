@@ -114,7 +114,7 @@ export class CIFailureHandler extends EventHandler {
       return;
     }
 
-    warning(JSON.stringify(workflow_run));
+    console.log(JSON.stringify(workflow_run, null, 2));
 
     const messageActionMap: ActionMessageMap<WorkflowRunEvent> = {
       completed: {
