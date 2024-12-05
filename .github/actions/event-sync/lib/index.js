@@ -36069,12 +36069,15 @@ class CIFailureHandler extends EventHandler {
             (0, core_1.warning)(`Workflow run is not failed. Conclusion: ${workflow_run.conclusion}`);
             return;
         }
-        (0, core_1.warning)(JSON.stringify(workflow_run, null, 2));
+        (0, core_1.warning)(JSON.stringify(workflow_run));
         const messageActionMap = {
             completed: {
                 title: '❗ Workflow run failed',
-                content: `Workflow name: ${workflow_run.name}, PR: ${workflow_run.pull_requests}`,
+                // @ts-expect-error -- type ignore
+                content: `Workflow name: ${workflow_run.name}, display title: ${workflow_run.display_title}`,
                 url: workflow_run.html_url,
+                // @ts-expect-error -- type ignore
+                creator: workflow_run.actor.login,
             },
         };
         const message = messageActionMap[action];
@@ -36220,7 +36223,9 @@ class LarkPlatform {
         try {
             const formattedMessage = this.formatMessage(message);
             const res = await axios_1.default.post(this.webhookUrl, formattedMessage);
-            console.log(res.data);
+            if (res.data.code !== 0) {
+                throw new Error(res.data.msg);
+            }
         }
         catch (error) {
             core.setFailed(`Failed to send message to Lark: ${error}.message`);

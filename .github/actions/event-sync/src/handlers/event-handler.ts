@@ -114,13 +114,16 @@ export class CIFailureHandler extends EventHandler {
       return;
     }
 
-    warning(JSON.stringify(workflow_run, null, 2));
+    warning(JSON.stringify(workflow_run));
 
     const messageActionMap: ActionMessageMap<WorkflowRunEvent> = {
       completed: {
         title: '❗ Workflow run failed',
-        content: `Workflow name: ${workflow_run.name}, PR: ${workflow_run.pull_requests}`,
+        // @ts-expect-error -- type ignore
+        content: `Workflow name: ${workflow_run.name}, display title: ${workflow_run.display_title}`,
         url: workflow_run.html_url,
+        // @ts-expect-error -- type ignore
+        creator: workflow_run.actor.login,
       },
     };
 
