@@ -120,7 +120,7 @@ export class CIFailureHandler extends EventHandler {
       completed: {
         title: '❗ Workflow run failed',
         // @ts-expect-error -- type ignore
-        content: `Workflow name: ${workflow_run.name}, display title: ${workflow_run.display_title}`,
+        content: `Workflow name: ${workflow_run.name} \n Display title: ${workflow_run.display_title}`,
         url: workflow_run.html_url,
         // @ts-expect-error -- type ignore
         creator: workflow_run.actor.login,
