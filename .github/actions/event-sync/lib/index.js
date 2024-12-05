@@ -36069,12 +36069,11 @@ class CIFailureHandler extends EventHandler {
             (0, core_1.warning)(`Workflow run is not failed. Conclusion: ${workflow_run.conclusion}`);
             return;
         }
+        (0, core_1.warning)(JSON.stringify(workflow_run, null, 2));
         const messageActionMap = {
             completed: {
                 title: '❗ Workflow run failed',
-                content: `Workflow name: ${JSON.stringify(workflow_run)}, PRs: ${workflow_run.pull_requests
-                    .map(pr => JSON.stringify(pr))
-                    .join(', ')}`,
+                content: `Workflow name: ${workflow_run.name}, PR: ${workflow_run.pull_requests}`,
                 url: workflow_run.html_url,
             },
         };
@@ -42929,10 +42928,19 @@ const github_1 = __nccwpck_require__(988);
 const core_1 = __nccwpck_require__(357);
 const lark_1 = __nccwpck_require__(7069);
 const handler_factory_1 = __nccwpck_require__(3105);
+const parsePersonOpenIds = (personOpenIds) => {
+    return personOpenIds
+        .split('\n')
+        .reduce((acc, line) => {
+        const [name, id] = line.split(':');
+        acc[name] = id;
+        return acc;
+    }, {});
+};
 async function run() {
     try {
         const larkWebhookUrl = (0, core_1.getInput)('lark_webhook_url', { required: true });
-        const larkPersonOpenIds = JSON.parse((0, core_1.getInput)('lark_person_open_ids', { required: false }) || '{}');
+        const larkPersonOpenIds = parsePersonOpenIds((0, core_1.getInput)('lark_person_open_ids', { required: false }));
         const platform = new lark_1.LarkPlatform(larkWebhookUrl, larkPersonOpenIds);
         const handler = handler_factory_1.handlerFactory.createHandler(github_1.context.eventName, platform);
         if (!handler) {
