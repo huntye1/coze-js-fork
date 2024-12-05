@@ -568,8 +568,8 @@ class OidcClient {
             const res = yield httpclient
                 .getJson(id_token_url)
                 .catch(error => {
-                throw new Error(`Failed to get ID Token. \n
-        Error Code : ${error.statusCode}\n
+                throw new Error(`Failed to get ID Token. \n 
+        Error Code : ${error.statusCode}\n 
         Error Message: ${error.message}`);
             });
             const id_token = (_a = res.result) === null || _a === void 0 ? void 0 : _a.value;
@@ -36069,12 +36069,12 @@ class CIFailureHandler extends EventHandler {
             (0, core_1.warning)(`Workflow run is not failed. Conclusion: ${workflow_run.conclusion}`);
             return;
         }
-        (0, core_1.warning)(JSON.stringify(workflow_run));
+        console.log(JSON.stringify(workflow_run, null, 2));
         const messageActionMap = {
             completed: {
                 title: '❗ Workflow run failed',
                 // @ts-expect-error -- type ignore
-                content: `Workflow name: ${workflow_run.name}, display title: ${workflow_run.display_title}`,
+                content: `Workflow name: ${workflow_run.name} \n Display title: ${workflow_run.display_title}`,
                 url: workflow_run.html_url,
                 // @ts-expect-error -- type ignore
                 creator: workflow_run.actor.login,
@@ -39267,7 +39267,7 @@ function buildURL(url, params, options) {
   if (!params) {
     return url;
   }
-
+  
   const _encode = options && options.encode || encode;
 
   const serializeFn = options && options.serialize;
@@ -40489,7 +40489,7 @@ class ZlibHeaderTransformStream extends stream__default["default"].Transform {
       if (chunk[0] !== 120) { // Hex: 78
         const header = Buffer.alloc(2);
         header[0] = 120; // Hex: 78
-        header[1] = 156; // Hex: 9C
+        header[1] = 156; // Hex: 9C 
         this.push(header, encoding);
       }
     }
@@ -42889,7 +42889,7 @@ module.exports = /*#__PURE__*/JSON.parse('[[[0,44],"disallowed_STD3_valid"],[[45
 /************************************************************************/
 /******/ // The module cache
 /******/ var __webpack_module_cache__ = {};
-/******/
+/******/ 
 /******/ // The require function
 /******/ function __nccwpck_require__(moduleId) {
 /******/ 	// Check if module is in cache
@@ -42903,7 +42903,7 @@ module.exports = /*#__PURE__*/JSON.parse('[[[0,44],"disallowed_STD3_valid"],[[45
 /******/ 		// no module.loaded needed
 /******/ 		exports: {}
 /******/ 	};
-/******/
+/******/ 
 /******/ 	// Execute the module function
 /******/ 	var threw = true;
 /******/ 	try {
@@ -42912,16 +42912,16 @@ module.exports = /*#__PURE__*/JSON.parse('[[[0,44],"disallowed_STD3_valid"],[[45
 /******/ 	} finally {
 /******/ 		if(threw) delete __webpack_module_cache__[moduleId];
 /******/ 	}
-/******/
+/******/ 
 /******/ 	// Return the exports of the module
 /******/ 	return module.exports;
 /******/ }
-/******/
+/******/ 
 /************************************************************************/
 /******/ /* webpack/runtime/compat */
-/******/
+/******/ 
 /******/ if (typeof __nccwpck_require__ !== 'undefined') __nccwpck_require__.ab = new URL('.', import.meta.url).pathname.slice(import.meta.url.match(/^file:\/\/\/\w:/) ? 1 : 0, -1) + "/";
-/******/
+/******/ 
 /************************************************************************/
 var __webpack_exports__ = {};
 // This entry need to be wrapped in an IIFE because it uses a non-standard name for the exports (exports).
@@ -42933,15 +42933,11 @@ const github_1 = __nccwpck_require__(988);
 const core_1 = __nccwpck_require__(357);
 const lark_1 = __nccwpck_require__(7069);
 const handler_factory_1 = __nccwpck_require__(3105);
-const parsePersonOpenIds = (personOpenIds) => {
-    return personOpenIds
-        .split('\n')
-        .reduce((acc, line) => {
-        const [name, id] = line.split(':');
-        acc[name] = id;
-        return acc;
-    }, {});
-};
+const parsePersonOpenIds = (personOpenIds) => personOpenIds.split('\n').reduce((acc, line) => {
+    const [name, id] = line.split(':');
+    acc[name] = id;
+    return acc;
+}, {});
 async function run() {
     try {
         const larkWebhookUrl = (0, core_1.getInput)('lark_webhook_url', { required: true });
