@@ -440,6 +440,10 @@
     {
       "packageName": "@coze/taro-api-example3",
       "projectFolder": "examples/coze-js-taro3"
+    },
+    {
+      "packageName": "@coze/client-app",
+      "projectFolder": "packages/client-app"
     }
   ]
 }
