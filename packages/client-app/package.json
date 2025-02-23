@@ -5,7 +5,9 @@
   "type": "module",
   "scripts": {
     "build": "rsbuild build",
-    "dev": "rsbuild dev --open",
+    "dev": "rsbuild dev",
+    "dev:client": "tauri dev",
+    "dev:web": "rsbuild dev --open",
     "preview": "rsbuild preview",
     "test": "vitest"
   },
@@ -19,6 +21,7 @@
     "@coze-infra/vitest-config": "workspace:*",
     "@rsbuild/core": "^1.2.8",
     "@rsbuild/plugin-react": "^1.1.0",
+    "@tauri-apps/cli": "~2.2.5",
     "@types/react": "^18.3.11",
     "@types/react-dom": "^18.3.0",
     "typescript": "^5.5.3"
